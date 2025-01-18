@@ -57,18 +57,30 @@ class BurnoutTest {
     }
 
     calculateTotalScore() {
-        return this.scores.reduce((a, b) => a + b, 0);
-    }
+    let totalScore = 0;
+    this.scores.forEach((score, index) => {
+        const question = questions[index];
+        totalScore += score * question.weight;
+    });
+    // 100점 만점으로 변환
+    return (totalScore / (questions.length * 5)) * 100;
+}
 
-    // 여기에 새로운 메서드들을 추가합니다
-    calculateDetailedResult() {
-        const categoryScores = {
-            physical: 0,
-            emotional: 0,
-            cognitive: 0,
-            behavioral: 0,
-            work: 0
-        };
+// 여기에 getResultLevel 메서드를 추가
+    getResultLevel(score) {
+        return resultLevels.find(level => 
+            score >= level.range[0] && score <= level.range[1]
+        );
+    }
+  
+calculateDetailedResult() {
+    const categoryScores = {
+        physical: 0,
+        emotional: 0,
+        cognitive: 0,
+        behavioral: 0,
+        work: 0
+    };
 
         // 카테고리별 점수 계산
         this.scores.forEach((score, index) => {
